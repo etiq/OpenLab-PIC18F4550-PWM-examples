@@ -1,0 +1,9 @@
+_SetOutputPWM1: CODE, 32692 0 76
+_PwmCycle: CODE, 32548 0 34
+_Delay1KTCYx: CODE, 32488 0 16
+_main: CODE, 32582 0 52
+__initialization: CODE, 32482 0 0
+_delay_ms: CODE, 32522 0 26
+_OpenPWM1: CODE, 32504 0 18
+_SetDCPWM1: CODE, 32634 0 58
+Total: 280

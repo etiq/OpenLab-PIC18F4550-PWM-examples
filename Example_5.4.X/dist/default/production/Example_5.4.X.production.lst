@@ -1,0 +1,931 @@
+
+
+Microchip Technology PIC18 LITE Macro Assembler V1.32 build 58300 
+                                                                                               Sat Oct 11 15:44:10 2014
+
+Microchip Technology Omniscient Code Generator (Lite mode) build 58300
+     1                           	processor	18F4550
+     2                           	fnconf	rparam,??,?,0
+     3                           	opt	pw 120
+     4                           	opt	lm
+     5                           	psect	text0,global,reloc=2,class=CODE,delta=1
+     6                           	psect	cinit,global,reloc=2,class=CODE,delta=1
+     7                           	psect	cstackCOMRAM,global,class=COMRAM,space=1,delta=1
+     8                           	psect	text1,global,reloc=2,class=CODE,delta=1
+     9                           	psect	text2,global,reloc=2,class=CODE,delta=1
+    10                           	psect	text3,global,reloc=2,class=CODE,delta=1
+    11                           	psect	text4,global,reloc=2,class=CODE,delta=1
+    12                           	psect	text5,global,reloc=2,class=CODE,delta=1
+    13                           	psect	text6,global,reloc=2,class=CODE,delta=1
+    14                           	psect	text7,global,reloc=2,class=CODE,delta=1
+    15                           	psect	intsave_regs,global,class=BIGRAM,space=1,delta=1
+    16                           	psect	rparam,global,class=COMRAM,space=1,delta=1
+    17  0000                     _CCP1CON	set	4029
+    18  0000                     _CCP2CON	set	4026
+    19  0000                     _CCPR1L	set	4030
+    20  0000                     _CCPR2L	set	4027
+    21  0000                     _PR2	set	4043
+    22  0000                     _T2CONbits	set	4042
+    23  0000                     _TRISBbits	set	3987
+    24  0000                     _TRISCbits	set	3988
+    25                           
+    26 ;;
+    27 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+    28 ;;
+    29 ;; *************** function _main *****************
+    30 ;; Defined at:
+    31 ;;		line 60 in file "main.c"
+    32 ;; Parameters:    Size  Location     Type
+    33 ;;		None
+    34 ;; Auto vars:     Size  Location     Type
+    35 ;;  Duty_cycle_2    2   16[COMRAM] unsigned int 
+    36 ;;  Duty_cycle_1    2   14[COMRAM] unsigned int 
+    37 ;;  periode         1   18[COMRAM] unsigned char 
+    38 ;; Return value:  Size  Location     Type
+    39 ;;		None               void
+    40 ;; Registers used:
+    41 ;;		wreg, status,2, status,0, tblptrl, tblptrh, tblptru, cstack
+    42 ;; Tracked objects:
+    43 ;;		On entry : 0/0
+    44 ;;		On exit  : 0/0
+    45 ;;		Unchanged: 0/0
+    46 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+    47 ;;      Params:         0       0       0       0       0       0       0       0       0
+    48 ;;      Locals:         5       0       0       0       0       0       0       0       0
+    49 ;;      Temps:          0       0       0       0       0       0       0       0       0
+    50 ;;      Totals:         5       0       0       0       0       0       0       0       0
+    51 ;;Total ram usage:        5 bytes
+    52 ;; Hardware stack levels required when called:    3
+    53 ;; This function calls:
+    54 ;;		_OpenPWM1
+    55 ;;		_OpenPWM2
+    56 ;;		_PwmCycle
+    57 ;; This function is called by:
+    58 ;;		Startup code after reset
+    59 ;; This function uses a non-reentrant model
+    60 ;;
+    61                           
+    62                           	psect	text0
+    63  007F40                     __ptext0:
+    64                           	opt stack 0
+    65  007F40                     _main:
+    66                           	opt stack 28
+    67                           
+    68                           ;main.c: 62: unsigned char periode = 0x4D;
+    69                           
+    70                           ;incstack = 0
+    71  007F40  0E4D               	movlw	77
+    72  007F42  6E13               	movwf	main@periode,c
+    73                           
+    74                           ;main.c: 63: unsigned int Duty_cycle_1 = 50;
+    75  007F44  0E00               	movlw	0
+    76  007F46  6E10               	movwf	main@Duty_cycle_1+1,c
+    77  007F48  0E32               	movlw	50
+    78  007F4A  6E0F               	movwf	main@Duty_cycle_1,c
+    79                           
+    80                           ;main.c: 64: unsigned int Duty_cycle_2 = 170;
+    81  007F4C  0E00               	movlw	0
+    82  007F4E  6E12               	movwf	main@Duty_cycle_2+1,c
+    83  007F50  0EAA               	movlw	170
+    84  007F52  6E11               	movwf	main@Duty_cycle_2,c
+    85                           
+    86                           ;main.c: 65: TRISCbits.TRISC2 = 0x00;
+    87  007F54  9494               	bcf	3988,2,c	;volatile
+    88                           
+    89                           ;main.c: 66: TRISCbits.TRISC1 = 0x00;
+    90  007F56  9294               	bcf	3988,1,c	;volatile
+    91                           
+    92                           ;main.c: 67: OpenPWM1( periode );
+    93  007F58  5013               	movf	main@periode,w,c
+    94  007F5A  EC33  F03F         	call	_OpenPWM1
+    95                           
+    96                           ;main.c: 68: OpenPWM2( periode );
+    97  007F5E  5013               	movf	main@periode,w,c
+    98  007F60  EC49  F03F         	call	_OpenPWM2
+    99  007F64                     l789:
+   100                           
+   101                           ;main.c: 70: {
+   102                           ;main.c: 71: PwmCycle(Duty_cycle_1, Duty_cycle_2);
+   103  007F64  C00F  F007         	movff	main@Duty_cycle_1,PwmCycle@Duty_cycle_1
+   104  007F68  C010  F008         	movff	main@Duty_cycle_1+1,PwmCycle@Duty_cycle_1+1
+   105  007F6C  C011  F009         	movff	main@Duty_cycle_2,PwmCycle@Duty_cycle_2
+   106  007F70  C012  F00A         	movff	main@Duty_cycle_2+1,PwmCycle@Duty_cycle_2+1
+   107  007F74  ECBD  F03F         	call	_PwmCycle	;wreg free
+   108  007F78  D7F5               	goto	l789
+   109  007F7A                     __end_of_main:
+   110                           	opt stack 0
+   111                           
+   112                           	psect	cinit
+   113  007E50                     __pcinit:
+   114                           	opt stack 0
+   115  007E50                     start_initialization:
+   116                           	opt stack 0
+   117  007E50                     __initialization:
+   118                           	opt stack 0
+   119  007E50                     end_of_initialization:
+   120                           	opt stack 0
+   121  007E50                     __end_of__initialization:
+   122                           	opt stack 0
+   123  007E50  0100               	movlb	0
+   124  007E52  EFA0  F03F         	goto	_main	;jump to C main() function
+   125                           
+   126                           	psect	cstackCOMRAM
+   127  000001                     __pcstackCOMRAM:
+   128                           	opt stack 0
+   129  000001                     ??_OpenPWM2:
+   130  000001                     OpenPWM1@period:
+   131                           	opt stack 0
+   132  000001                     Delay1KTCYx@unit:
+   133                           	opt stack 0
+   134  000001                     SetDCPWM1@dutycycle:
+   135                           	opt stack 0
+   136  000001                     SetDCPWM2@dutycycle:
+   137                           	opt stack 0
+   138                           
+   139                           ; 2 bytes @ 0x0
+   140  000001                     	ds	1
+   141  000002                     delay_ms@t:
+   142                           	opt stack 0
+   143  000002                     OpenPWM2@period:
+   144                           	opt stack 0
+   145                           
+   146                           ; 1 bytes @ 0x1
+   147  000002                     	ds	1
+   148  000003                     ??_SetDCPWM1:
+   149  000003                     ??_SetDCPWM2:
+   150  000003                     delay_ms@i:
+   151                           	opt stack 0
+   152  000003                     OpenPWM2@ccp2mx:
+   153                           	opt stack 0
+   154                           
+   155                           ; 1 bytes @ 0x2
+   156  000003                     	ds	2
+   157  000005                     SetDCPWM1@DCycle:
+   158                           	opt stack 0
+   159  000005                     SetDCPWM2@DCycle:
+   160                           	opt stack 0
+   161                           
+   162                           ; 2 bytes @ 0x4
+   163  000005                     	ds	2
+   164  000007                     PwmCycle@Duty_cycle_1:
+   165                           	opt stack 0
+   166                           
+   167                           ; 2 bytes @ 0x6
+   168  000007                     	ds	2
+   169  000009                     PwmCycle@Duty_cycle_2:
+   170                           	opt stack 0
+   171                           
+   172                           ; 2 bytes @ 0x8
+   173  000009                     	ds	2
+   174  00000B                     ??_PwmCycle:
+   175                           
+   176                           ; 0 bytes @ 0xA
+   177  00000B                     	ds	2
+   178  00000D                     PwmCycle@p:
+   179                           	opt stack 0
+   180                           
+   181                           ; 1 bytes @ 0xC
+   182  00000D                     	ds	1
+   183  00000E                     PwmCycle@q:
+   184                           	opt stack 0
+   185                           
+   186                           ; 1 bytes @ 0xD
+   187  00000E                     	ds	1
+   188  00000F                     main@Duty_cycle_1:
+   189                           	opt stack 0
+   190                           
+   191                           ; 2 bytes @ 0xE
+   192  00000F                     	ds	2
+   193  000011                     main@Duty_cycle_2:
+   194                           	opt stack 0
+   195                           
+   196                           ; 2 bytes @ 0x10
+   197  000011                     	ds	2
+   198  000013                     main@periode:
+   199                           	opt stack 0
+   200                           
+   201                           ; 1 bytes @ 0x12
+   202  000013                     	ds	1
+   203                           
+   204 ;; *************** function _PwmCycle *****************
+   205 ;; Defined at:
+   206 ;;		line 14 in file "Pwm_1.c"
+   207 ;; Parameters:    Size  Location     Type
+   208 ;;  Duty_cycle_1    2    6[COMRAM] unsigned int 
+   209 ;;  Duty_cycle_2    2    8[COMRAM] unsigned int 
+   210 ;; Auto vars:     Size  Location     Type
+   211 ;;  q               1   13[COMRAM] unsigned char 
+   212 ;;  p               1   12[COMRAM] unsigned char 
+   213 ;; Return value:  Size  Location     Type
+   214 ;;		None               void
+   215 ;; Registers used:
+   216 ;;		wreg, status,2, status,0, cstack
+   217 ;; Tracked objects:
+   218 ;;		On entry : 0/0
+   219 ;;		On exit  : 0/0
+   220 ;;		Unchanged: 0/0
+   221 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   222 ;;      Params:         4       0       0       0       0       0       0       0       0
+   223 ;;      Locals:         2       0       0       0       0       0       0       0       0
+   224 ;;      Temps:          2       0       0       0       0       0       0       0       0
+   225 ;;      Totals:         8       0       0       0       0       0       0       0       0
+   226 ;;Total ram usage:        8 bytes
+   227 ;; Hardware stack levels used:    1
+   228 ;; Hardware stack levels required when called:    2
+   229 ;; This function calls:
+   230 ;;		_SetDCPWM1
+   231 ;;		_SetDCPWM2
+   232 ;;		_delay_ms
+   233 ;; This function is called by:
+   234 ;;		_main
+   235 ;; This function uses a non-reentrant model
+   236 ;;
+   237                           
+   238                           	psect	text1
+   239  007F7A                     __ptext1:
+   240                           	opt stack 0
+   241  007F7A                     _PwmCycle:
+   242                           	opt stack 28
+   243                           
+   244                           ;Pwm_1.c: 16: unsigned char p = Duty_cycle_1;
+   245                           
+   246                           ;incstack = 0
+   247  007F7A  C007  F00D         	movff	PwmCycle@Duty_cycle_1,PwmCycle@p
+   248                           
+   249                           ;Pwm_1.c: 17: unsigned char q = Duty_cycle_2;
+   250  007F7E  C009  F00E         	movff	PwmCycle@Duty_cycle_2,PwmCycle@q
+   251                           
+   252                           ;Pwm_1.c: 18: while(Duty_cycle_1 != q)
+   253  007F82  D014               	goto	l769
+   254  007F84                     l763:
+   255                           
+   256                           ;Pwm_1.c: 19: {
+   257                           ;Pwm_1.c: 20: SetDCPWM1(Duty_cycle_1);
+   258  007F84  C007  F001         	movff	PwmCycle@Duty_cycle_1,SetDCPWM1@dutycycle
+   259  007F88  C008  F002         	movff	PwmCycle@Duty_cycle_1+1,SetDCPWM1@dutycycle+1
+   260  007F8C  EC66  F03F         	call	_SetDCPWM1	;wreg free
+   261                           
+   262                           ;Pwm_1.c: 21: SetDCPWM2(Duty_cycle_2);
+   263  007F90  C009  F001         	movff	PwmCycle@Duty_cycle_2,SetDCPWM2@dutycycle
+   264  007F94  C00A  F002         	movff	PwmCycle@Duty_cycle_2+1,SetDCPWM2@dutycycle+1
+   265  007F98  EC83  F03F         	call	_SetDCPWM2	;wreg free
+   266                           
+   267                           ;Pwm_1.c: 22: Duty_cycle_1++;
+   268  007F9C  4A07               	infsnz	PwmCycle@Duty_cycle_1,f,c
+   269  007F9E  2A08               	incf	PwmCycle@Duty_cycle_1+1,f,c
+   270                           
+   271                           ;Pwm_1.c: 23: Duty_cycle_2--;
+   272  007FA0  0609               	decf	PwmCycle@Duty_cycle_2,f,c
+   273  007FA2  A0D8               	btfss	status,0,c
+   274  007FA4  060A               	decf	PwmCycle@Duty_cycle_2+1,f,c
+   275                           
+   276                           ;Pwm_1.c: 24: delay_ms(128);
+   277  007FA6  0E80               	movlw	128
+   278  007FA8  EC3C  F03F         	call	_delay_ms
+   279  007FAC                     l769:
+   280  007FAC  500E               	movf	PwmCycle@q,w,c
+   281  007FAE  6E0B               	movwf	??_PwmCycle& (0+255),c
+   282  007FB0  6A0C               	clrf	(??_PwmCycle+1)& (0+255),c
+   283  007FB2  5008               	movf	PwmCycle@Duty_cycle_1+1,w,c
+   284  007FB4  180C               	xorwf	??_PwmCycle+1,w,c
+   285  007FB6  E102               	bnz	u65
+   286  007FB8  5007               	movf	PwmCycle@Duty_cycle_1,w,c
+   287  007FBA  180B               	xorwf	??_PwmCycle,w,c
+   288  007FBC                     u65:
+   289  007FBC  B4D8               	btfsc	status,2,c
+   290  007FBE  D015               	goto	l777
+   291  007FC0  D7E1               	goto	l763
+   292  007FC2                     l771:
+   293                           
+   294                           ;Pwm_1.c: 28: {
+   295                           ;Pwm_1.c: 29: SetDCPWM1(Duty_cycle_1);
+   296  007FC2  C007  F001         	movff	PwmCycle@Duty_cycle_1,SetDCPWM1@dutycycle
+   297  007FC6  C008  F002         	movff	PwmCycle@Duty_cycle_1+1,SetDCPWM1@dutycycle+1
+   298  007FCA  EC66  F03F         	call	_SetDCPWM1	;wreg free
+   299                           
+   300                           ;Pwm_1.c: 30: SetDCPWM2(Duty_cycle_2);
+   301  007FCE  C009  F001         	movff	PwmCycle@Duty_cycle_2,SetDCPWM2@dutycycle
+   302  007FD2  C00A  F002         	movff	PwmCycle@Duty_cycle_2+1,SetDCPWM2@dutycycle+1
+   303  007FD6  EC83  F03F         	call	_SetDCPWM2	;wreg free
+   304                           
+   305                           ;Pwm_1.c: 31: Duty_cycle_1--;
+   306  007FDA  0607               	decf	PwmCycle@Duty_cycle_1,f,c
+   307  007FDC  A0D8               	btfss	status,0,c
+   308  007FDE  0608               	decf	PwmCycle@Duty_cycle_1+1,f,c
+   309                           
+   310                           ;Pwm_1.c: 32: Duty_cycle_2++;
+   311  007FE0  4A09               	infsnz	PwmCycle@Duty_cycle_2,f,c
+   312  007FE2  2A0A               	incf	PwmCycle@Duty_cycle_2+1,f,c
+   313                           
+   314                           ;Pwm_1.c: 33: delay_ms(128);
+   315  007FE4  0E80               	movlw	128
+   316  007FE6  EC3C  F03F         	call	_delay_ms
+   317  007FEA                     l777:
+   318  007FEA  500D               	movf	PwmCycle@p,w,c
+   319  007FEC  6E0B               	movwf	??_PwmCycle& (0+255),c
+   320  007FEE  6A0C               	clrf	(??_PwmCycle+1)& (0+255),c
+   321  007FF0  5008               	movf	PwmCycle@Duty_cycle_1+1,w,c
+   322  007FF2  180C               	xorwf	??_PwmCycle+1,w,c
+   323  007FF4  E102               	bnz	u75
+   324  007FF6  5007               	movf	PwmCycle@Duty_cycle_1,w,c
+   325  007FF8  180B               	xorwf	??_PwmCycle,w,c
+   326  007FFA                     u75:
+   327  007FFA  B4D8               	btfsc	status,2,c
+   328  007FFC  0012               	return	
+   329  007FFE  D7E1               	goto	l771
+   330  008000                     __end_of_PwmCycle:
+   331                           	opt stack 0
+   332                           status	equ	0xFD8
+   333                           
+   334 ;; *************** function _delay_ms *****************
+   335 ;; Defined at:
+   336 ;;		line 18 in file "delay.c"
+   337 ;; Parameters:    Size  Location     Type
+   338 ;;  t               1    wreg     unsigned char 
+   339 ;; Auto vars:     Size  Location     Type
+   340 ;;  t               1    1[COMRAM] unsigned char 
+   341 ;;  i               1    2[COMRAM] unsigned char 
+   342 ;; Return value:  Size  Location     Type
+   343 ;;		None               void
+   344 ;; Registers used:
+   345 ;;		wreg, status,2, status,0, cstack
+   346 ;; Tracked objects:
+   347 ;;		On entry : 0/0
+   348 ;;		On exit  : 0/0
+   349 ;;		Unchanged: 0/0
+   350 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   351 ;;      Params:         0       0       0       0       0       0       0       0       0
+   352 ;;      Locals:         2       0       0       0       0       0       0       0       0
+   353 ;;      Temps:          0       0       0       0       0       0       0       0       0
+   354 ;;      Totals:         2       0       0       0       0       0       0       0       0
+   355 ;;Total ram usage:        2 bytes
+   356 ;; Hardware stack levels used:    1
+   357 ;; Hardware stack levels required when called:    1
+   358 ;; This function calls:
+   359 ;;		_Delay1KTCYx
+   360 ;; This function is called by:
+   361 ;;		_PwmCycle
+   362 ;;		_Delay_s
+   363 ;; This function uses a non-reentrant model
+   364 ;;
+   365                           
+   366                           	psect	text2
+   367  007E78                     __ptext2:
+   368                           	opt stack 0
+   369  007E78                     _delay_ms:
+   370                           	opt stack 28
+   371                           
+   372                           ;incstack = 0
+   373                           ;delay_ms@t stored from wreg
+   374  007E78  6E02               	movwf	delay_ms@t,c
+   375                           
+   376                           ;delay.c: 20: unsigned char i;
+   377                           ;delay.c: 21: for (i=0;i<=t;i++)
+   378  007E7A  0E00               	movlw	0
+   379  007E7C  6E03               	movwf	delay_ms@i,c
+   380  007E7E  D004               	goto	l731
+   381  007E80                     l727:
+   382                           
+   383                           ;delay.c: 22: Delay1KTCYx(5);
+   384  007E80  0E05               	movlw	5
+   385  007E82  EC2B  F03F         	call	_Delay1KTCYx
+   386  007E86  2A03               	incf	delay_ms@i,f,c
+   387  007E88                     l731:
+   388  007E88  5003               	movf	delay_ms@i,w,c
+   389  007E8A  5C02               	subwf	delay_ms@t,w,c
+   390  007E8C  A0D8               	btfss	status,0,c
+   391                           
+   392                           ;delay.c: 26: return;
+   393  007E8E  0012               	return	
+   394  007E90  D7F7               	goto	l727
+   395  007E92                     __end_of_delay_ms:
+   396                           	opt stack 0
+   397                           status	equ	0xFD8
+   398                           
+   399 ;; *************** function _Delay1KTCYx *****************
+   400 ;; Defined at:
+   401 ;;		line 8 in file "C:\Program Files (x86)\Microchip\xc8\v1.32\sources\pic18\d1ktcyx.c"
+   402 ;; Parameters:    Size  Location     Type
+   403 ;;  unit            1    wreg     unsigned char 
+   404 ;; Auto vars:     Size  Location     Type
+   405 ;;  unit            1    0[COMRAM] unsigned char 
+   406 ;; Return value:  Size  Location     Type
+   407 ;;		None               void
+   408 ;; Registers used:
+   409 ;;		wreg
+   410 ;; Tracked objects:
+   411 ;;		On entry : 0/0
+   412 ;;		On exit  : 0/0
+   413 ;;		Unchanged: 0/0
+   414 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   415 ;;      Params:         0       0       0       0       0       0       0       0       0
+   416 ;;      Locals:         1       0       0       0       0       0       0       0       0
+   417 ;;      Temps:          0       0       0       0       0       0       0       0       0
+   418 ;;      Totals:         1       0       0       0       0       0       0       0       0
+   419 ;;Total ram usage:        1 bytes
+   420 ;; Hardware stack levels used:    1
+   421 ;; This function calls:
+   422 ;;		Nothing
+   423 ;; This function is called by:
+   424 ;;		_delay_ms
+   425 ;;		_delay_us
+   426 ;;		_DelayPORXLCD
+   427 ;;		_DelayXLCD
+   428 ;; This function uses a non-reentrant model
+   429 ;;
+   430                           
+   431                           	psect	text3
+   432  007E56                     __ptext3:
+   433                           	opt stack 0
+   434  007E56                     _Delay1KTCYx:
+   435                           	opt stack 28
+   436                           
+   437                           ;incstack = 0
+   438                           ;Delay1KTCYx@unit stored from wreg
+   439  007E56  6E01               	movwf	Delay1KTCYx@unit,c
+   440  007E58                     l356:
+   441  007E58  0EFA               	movlw	250
+   442  007E5A                     u167:
+   443  007E5A  F000               	nop	
+   444  007E5C  2EE8               	decfsz	wreg,f,c
+   445  007E5E  D7FD               	goto	u167
+   446  007E60  2E01               	decfsz	Delay1KTCYx@unit,f,c
+   447  007E62  D7FA               	goto	l356
+   448  007E64  0012               	return	
+   449  007E66                     __end_of_Delay1KTCYx:
+   450                           	opt stack 0
+   451                           wreg	equ	0xFE8
+   452                           status	equ	0xFD8
+   453                           
+   454 ;; *************** function _SetDCPWM2 *****************
+   455 ;; Defined at:
+   456 ;;		line 7 in file "C:\Program Files (x86)\Microchip\xc8\v1.32\sources\pic18\plib\PWM\pw2setdc.c"
+   457 ;; Parameters:    Size  Location     Type
+   458 ;;  dutycycle       2    0[COMRAM] unsigned int 
+   459 ;; Auto vars:     Size  Location     Type
+   460 ;;  DCycle          2    4[COMRAM] struct PWMDC
+   461 ;; Return value:  Size  Location     Type
+   462 ;;		None               void
+   463 ;; Registers used:
+   464 ;;		wreg, status,2, status,0
+   465 ;; Tracked objects:
+   466 ;;		On entry : 0/0
+   467 ;;		On exit  : 0/0
+   468 ;;		Unchanged: 0/0
+   469 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   470 ;;      Params:         2       0       0       0       0       0       0       0       0
+   471 ;;      Locals:         2       0       0       0       0       0       0       0       0
+   472 ;;      Temps:          2       0       0       0       0       0       0       0       0
+   473 ;;      Totals:         6       0       0       0       0       0       0       0       0
+   474 ;;Total ram usage:        6 bytes
+   475 ;; Hardware stack levels used:    1
+   476 ;; This function calls:
+   477 ;;		Nothing
+   478 ;; This function is called by:
+   479 ;;		_PwmCycle
+   480 ;; This function uses a non-reentrant model
+   481 ;;
+   482                           
+   483                           	psect	text4
+   484  007F06                     __ptext4:
+   485                           	opt stack 0
+   486  007F06                     _SetDCPWM2:
+   487                           	opt stack 29
+   488                           
+   489                           ;incstack = 0
+   490  007F06  C001  F003         	movff	SetDCPWM2@dutycycle,??_SetDCPWM2
+   491  007F0A  C002  F004         	movff	SetDCPWM2@dutycycle+1,??_SetDCPWM2+1
+   492  007F0E  0E06               	movlw	6
+   493  007F10                     u35:
+   494  007F10  90D8               	bcf	status,0,c
+   495  007F12  3603               	rlcf	??_SetDCPWM2,f,c
+   496  007F14  3604               	rlcf	??_SetDCPWM2+1,f,c
+   497  007F16  2EE8               	decfsz	wreg,f,c
+   498  007F18  D7FB               	goto	u35
+   499  007F1A  C003  F005         	movff	??_SetDCPWM2,SetDCPWM2@DCycle
+   500  007F1E  C004  F006         	movff	??_SetDCPWM2+1,SetDCPWM2@DCycle+1
+   501  007F22  C006  FFBB         	movff	SetDCPWM2@DCycle+1,4027	;volatile
+   502  007F26  C005  F003         	movff	SetDCPWM2@DCycle,??_SetDCPWM2
+   503  007F2A  90D8               	bcf	status,0,c
+   504  007F2C  3203               	rrcf	??_SetDCPWM2,f,c
+   505  007F2E  90D8               	bcf	status,0,c
+   506  007F30  3203               	rrcf	??_SetDCPWM2,f,c
+   507  007F32  0E30               	movlw	48
+   508  007F34  1603               	andwf	??_SetDCPWM2,f,c
+   509  007F36  50BA               	movf	4026,w,c	;volatile
+   510  007F38  0BCF               	andlw	207
+   511  007F3A  1003               	iorwf	??_SetDCPWM2,w,c
+   512  007F3C  6EBA               	movwf	4026,c	;volatile
+   513  007F3E  0012               	return	
+   514  007F40                     __end_of_SetDCPWM2:
+   515                           	opt stack 0
+   516                           wreg	equ	0xFE8
+   517                           status	equ	0xFD8
+   518                           
+   519 ;; *************** function _SetDCPWM1 *****************
+   520 ;; Defined at:
+   521 ;;		line 7 in file "C:\Program Files (x86)\Microchip\xc8\v1.32\sources\pic18\plib\PWM\pw1setdc.c"
+   522 ;; Parameters:    Size  Location     Type
+   523 ;;  dutycycle       2    0[COMRAM] unsigned int 
+   524 ;; Auto vars:     Size  Location     Type
+   525 ;;  DCycle          2    4[COMRAM] struct PWMDC
+   526 ;; Return value:  Size  Location     Type
+   527 ;;		None               void
+   528 ;; Registers used:
+   529 ;;		wreg, status,2, status,0
+   530 ;; Tracked objects:
+   531 ;;		On entry : 0/0
+   532 ;;		On exit  : 0/0
+   533 ;;		Unchanged: 0/0
+   534 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   535 ;;      Params:         2       0       0       0       0       0       0       0       0
+   536 ;;      Locals:         2       0       0       0       0       0       0       0       0
+   537 ;;      Temps:          2       0       0       0       0       0       0       0       0
+   538 ;;      Totals:         6       0       0       0       0       0       0       0       0
+   539 ;;Total ram usage:        6 bytes
+   540 ;; Hardware stack levels used:    1
+   541 ;; This function calls:
+   542 ;;		Nothing
+   543 ;; This function is called by:
+   544 ;;		_PwmCycle
+   545 ;; This function uses a non-reentrant model
+   546 ;;
+   547                           
+   548                           	psect	text5
+   549  007ECC                     __ptext5:
+   550                           	opt stack 0
+   551  007ECC                     _SetDCPWM1:
+   552                           	opt stack 29
+   553                           
+   554                           ;incstack = 0
+   555  007ECC  C001  F003         	movff	SetDCPWM1@dutycycle,??_SetDCPWM1
+   556  007ED0  C002  F004         	movff	SetDCPWM1@dutycycle+1,??_SetDCPWM1+1
+   557  007ED4  0E06               	movlw	6
+   558  007ED6                     u25:
+   559  007ED6  90D8               	bcf	status,0,c
+   560  007ED8  3603               	rlcf	??_SetDCPWM1,f,c
+   561  007EDA  3604               	rlcf	??_SetDCPWM1+1,f,c
+   562  007EDC  2EE8               	decfsz	wreg,f,c
+   563  007EDE  D7FB               	goto	u25
+   564  007EE0  C003  F005         	movff	??_SetDCPWM1,SetDCPWM1@DCycle
+   565  007EE4  C004  F006         	movff	??_SetDCPWM1+1,SetDCPWM1@DCycle+1
+   566  007EE8  C006  FFBE         	movff	SetDCPWM1@DCycle+1,4030	;volatile
+   567  007EEC  C005  F003         	movff	SetDCPWM1@DCycle,??_SetDCPWM1
+   568  007EF0  90D8               	bcf	status,0,c
+   569  007EF2  3203               	rrcf	??_SetDCPWM1,f,c
+   570  007EF4  90D8               	bcf	status,0,c
+   571  007EF6  3203               	rrcf	??_SetDCPWM1,f,c
+   572  007EF8  0E30               	movlw	48
+   573  007EFA  1603               	andwf	??_SetDCPWM1,f,c
+   574  007EFC  50BD               	movf	4029,w,c	;volatile
+   575  007EFE  0BCF               	andlw	207
+   576  007F00  1003               	iorwf	??_SetDCPWM1,w,c
+   577  007F02  6EBD               	movwf	4029,c	;volatile
+   578  007F04  0012               	return	
+   579  007F06                     __end_of_SetDCPWM1:
+   580                           	opt stack 0
+   581                           wreg	equ	0xFE8
+   582                           status	equ	0xFD8
+   583                           
+   584 ;; *************** function _OpenPWM2 *****************
+   585 ;; Defined at:
+   586 ;;		line 18 in file "C:\Program Files (x86)\Microchip\xc8\v1.32\sources\pic18\plib\PWM\pw2open.c"
+   587 ;; Parameters:    Size  Location     Type
+   588 ;;  period          1    wreg     unsigned char 
+   589 ;; Auto vars:     Size  Location     Type
+   590 ;;  period          1    1[COMRAM] unsigned char 
+   591 ;;  ccp2mx          1    2[COMRAM] unsigned char 
+   592 ;;  pmmode          1    0        unsigned char 
+   593 ;; Return value:  Size  Location     Type
+   594 ;;		None               void
+   595 ;; Registers used:
+   596 ;;		wreg, status,2, tblptrl, tblptrh, tblptru
+   597 ;; Tracked objects:
+   598 ;;		On entry : 0/0
+   599 ;;		On exit  : 0/0
+   600 ;;		Unchanged: 0/0
+   601 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   602 ;;      Params:         0       0       0       0       0       0       0       0       0
+   603 ;;      Locals:         2       0       0       0       0       0       0       0       0
+   604 ;;      Temps:          1       0       0       0       0       0       0       0       0
+   605 ;;      Totals:         3       0       0       0       0       0       0       0       0
+   606 ;;Total ram usage:        3 bytes
+   607 ;; Hardware stack levels used:    1
+   608 ;; This function calls:
+   609 ;;		Nothing
+   610 ;; This function is called by:
+   611 ;;		_main
+   612 ;; This function uses a non-reentrant model
+   613 ;;
+   614                           
+   615                           	psect	text6
+   616  007E92                     __ptext6:
+   617                           	opt stack 0
+   618  007E92                     _OpenPWM2:
+   619                           	opt stack 30
+   620                           
+   621                           ;incstack = 0
+   622                           ;OpenPWM2@period stored from wreg
+   623  007E92  6E02               	movwf	OpenPWM2@period,c
+   624  007E94  0E0C               	movlw	12
+   625  007E96  6EBA               	movwf	4026,c	;volatile
+   626  007E98  0E05               	movlw	5
+   627  007E9A  6EF6               	movwf	tblptrl,c
+   628  007E9C                     	if	1	;There is more than 1 active tblptr byte
+   629  007E9C  0E00               	movlw	0
+   630  007E9E  6EF7               	movwf	tblptrh,c
+   631  007EA0                     	endif
+   632  007EA0                     	if	1	;There are 3 active tblptr bytes
+   633  007EA0  0E30               	movlw	48
+   634  007EA2  6EF8               	movwf	tblptru,c
+   635  007EA4                     	endif
+   636  007EA4  0008               	tblrd		*
+   637  007EA6  CFF5 F001          	movff	tablat,??_OpenPWM2
+   638  007EAA  A001               	btfss	??_OpenPWM2,0,c
+   639  007EAC  D002               	goto	l757
+   640  007EAE  6803               	setf	OpenPWM2@ccp2mx,c
+   641  007EB0  D002               	goto	l106
+   642  007EB2                     l757:
+   643  007EB2  0E00               	movlw	0
+   644  007EB4  6E03               	movwf	OpenPWM2@ccp2mx,c
+   645  007EB6                     l106:
+   646  007EB6  5003               	movf	OpenPWM2@ccp2mx,w,c
+   647  007EB8  B4D8               	btfsc	status,2,c
+   648  007EBA  D002               	goto	l107
+   649  007EBC  9294               	bcf	3988,1,c	;volatile
+   650  007EBE  D001               	goto	l108
+   651  007EC0                     l107:
+   652  007EC0  9693               	bcf	3987,3,c	;volatile
+   653  007EC2                     l108:
+   654  007EC2  94CA               	bcf	4042,2,c	;volatile
+   655  007EC4  C002  FFCB         	movff	OpenPWM2@period,4043	;volatile
+   656  007EC8  84CA               	bsf	4042,2,c	;volatile
+   657  007ECA  0012               	return	
+   658  007ECC                     __end_of_OpenPWM2:
+   659                           	opt stack 0
+   660                           tblptru	equ	0xFF8
+   661                           tblptrh	equ	0xFF7
+   662                           tblptrl	equ	0xFF6
+   663                           tablat	equ	0xFF5
+   664                           wreg	equ	0xFE8
+   665                           status	equ	0xFD8
+   666                           
+   667 ;; *************** function _OpenPWM1 *****************
+   668 ;; Defined at:
+   669 ;;		line 8 in file "C:\Program Files (x86)\Microchip\xc8\v1.32\sources\pic18\plib\PWM\pw1open.c"
+   670 ;; Parameters:    Size  Location     Type
+   671 ;;  period          1    wreg     unsigned char 
+   672 ;; Auto vars:     Size  Location     Type
+   673 ;;  period          1    0[COMRAM] unsigned char 
+   674 ;; Return value:  Size  Location     Type
+   675 ;;		None               void
+   676 ;; Registers used:
+   677 ;;		wreg, status,2, status,0
+   678 ;; Tracked objects:
+   679 ;;		On entry : 0/0
+   680 ;;		On exit  : 0/0
+   681 ;;		Unchanged: 0/0
+   682 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+   683 ;;      Params:         0       0       0       0       0       0       0       0       0
+   684 ;;      Locals:         1       0       0       0       0       0       0       0       0
+   685 ;;      Temps:          0       0       0       0       0       0       0       0       0
+   686 ;;      Totals:         1       0       0       0       0       0       0       0       0
+   687 ;;Total ram usage:        1 bytes
+   688 ;; Hardware stack levels used:    1
+   689 ;; This function calls:
+   690 ;;		Nothing
+   691 ;; This function is called by:
+   692 ;;		_main
+   693 ;; This function uses a non-reentrant model
+   694 ;;
+   695                           
+   696                           	psect	text7
+   697  007E66                     __ptext7:
+   698                           	opt stack 0
+   699  007E66                     _OpenPWM1:
+   700                           	opt stack 30
+   701                           
+   702                           ;incstack = 0
+   703                           ;OpenPWM1@period stored from wreg
+   704  007E66  6E01               	movwf	OpenPWM1@period,c
+   705  007E68  0E0C               	movlw	12
+   706  007E6A  12BD               	iorwf	4029,f,c	;volatile
+   707  007E6C  9494               	bcf	3988,2,c	;volatile
+   708  007E6E  94CA               	bcf	4042,2,c	;volatile
+   709  007E70  C001  FFCB         	movff	OpenPWM1@period,4043	;volatile
+   710  007E74  84CA               	bsf	4042,2,c	;volatile
+   711  007E76  0012               	return	
+   712  007E78                     __end_of_OpenPWM1:
+   713                           	opt stack 0
+   714  0000                     tblptru	equ	0xFF8
+   715                           tblptrh	equ	0xFF7
+   716                           tblptrl	equ	0xFF6
+   717                           tablat	equ	0xFF5
+   718                           wreg	equ	0xFE8
+   719                           status	equ	0xFD8
+   720                           tblptru	equ	0xFF8
+   721                           tblptrh	equ	0xFF7
+   722                           tblptrl	equ	0xFF6
+   723                           tablat	equ	0xFF5
+   724                           wreg	equ	0xFE8
+   725                           status	equ	0xFD8
+   726                           
+   727                           	psect	rparam
+   728  0000                     tblptru	equ	0xFF8
+   729                           tblptrh	equ	0xFF7
+   730                           tblptrl	equ	0xFF6
+   731                           tablat	equ	0xFF5
+   732                           wreg	equ	0xFE8
+   733                           status	equ	0xFD8
+
+
+Data Sizes:
+    Strings     0
+    Constant    0
+    Data        0
+    BSS         0
+    Persistent  0
+    Stack       0
+
+Auto Spaces:
+    Space          Size  Autos    Used
+    COMRAM           95     19      19
+    BANK0           160      0       0
+    BANK1           256      0       0
+    BANK2           256      0       0
+    BANK3           256      0       0
+    BANK4           256      0       0
+    BANK5           256      0       0
+    BANK6           256      0       0
+    BANK7           256      0       0
+
+Pointer List with Targets:
+
+    None.
+
+Critical Paths under _main in COMRAM
+
+    _main->_PwmCycle
+    _PwmCycle->_SetDCPWM1
+    _PwmCycle->_SetDCPWM2
+    _delay_ms->_Delay1KTCYx
+
+Critical Paths under _main in BANK0
+
+    None.
+
+Critical Paths under _main in BANK1
+
+    None.
+
+Critical Paths under _main in BANK2
+
+    None.
+
+Critical Paths under _main in BANK3
+
+    None.
+
+Critical Paths under _main in BANK4
+
+    None.
+
+Critical Paths under _main in BANK5
+
+    None.
+
+Critical Paths under _main in BANK6
+
+    None.
+
+Critical Paths under _main in BANK7
+
+    None.
+
+Call Graph Tables:
+
+ ---------------------------------------------------------------------------------
+ (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+ ---------------------------------------------------------------------------------
+ (0) _main                                                 5     5      0     648
+                                             14 COMRAM     5     5      0
+                           _OpenPWM1
+                           _OpenPWM2
+                           _PwmCycle
+ ---------------------------------------------------------------------------------
+ (1) _PwmCycle                                             8     4      4     543
+                                              6 COMRAM     8     4      4
+                          _SetDCPWM1
+                          _SetDCPWM2
+                           _delay_ms
+ ---------------------------------------------------------------------------------
+ (2) _delay_ms                                             2     2      0      45
+                                              1 COMRAM     2     2      0
+                        _Delay1KTCYx
+ ---------------------------------------------------------------------------------
+ (3) _Delay1KTCYx                                          1     1      0      15
+                                              0 COMRAM     1     1      0
+ ---------------------------------------------------------------------------------
+ (2) _SetDCPWM2                                            6     4      2     131
+                                              0 COMRAM     6     4      2
+ ---------------------------------------------------------------------------------
+ (2) _SetDCPWM1                                            6     4      2     131
+                                              0 COMRAM     6     4      2
+ ---------------------------------------------------------------------------------
+ (1) _OpenPWM2                                             4     4      0      30
+                                              0 COMRAM     3     3      0
+ ---------------------------------------------------------------------------------
+ (1) _OpenPWM1                                             1     1      0      15
+                                              0 COMRAM     1     1      0
+ ---------------------------------------------------------------------------------
+ Estimated maximum stack depth 3
+ ---------------------------------------------------------------------------------
+
+ Call Graph Graphs:
+
+ _main (ROOT)
+   _OpenPWM1
+   _OpenPWM2
+   _PwmCycle
+     _SetDCPWM1
+     _SetDCPWM2
+     _delay_ms
+       _Delay1KTCYx
+
+ Address spaces:
+Name               Size   Autos  Total    Cost      Usage
+BITCOMRAM           5F      0       0       0        0.0%
+EEDATA             100      0       0       0        0.0%
+NULL                 0      0       0       0        0.0%
+CODE                 0      0       0       0        0.0%
+COMRAM              5F     13      13       1       20.0%
+STACK                0      0       0       2        0.0%
+DATA                 0      0       0       3        0.0%
+BITBANK0            A0      0       0       4        0.0%
+BANK0               A0      0       0       5        0.0%
+BITBANK1           100      0       0       6        0.0%
+BANK1              100      0       0       7        0.0%
+BITBANK2           100      0       0       8        0.0%
+BANK2              100      0       0       9        0.0%
+BITBANK3           100      0       0      10        0.0%
+BANK3              100      0       0      11        0.0%
+BITBANK4           100      0       0      12        0.0%
+BANK4              100      0       0      13        0.0%
+BITBANK5           100      0       0      14        0.0%
+BANK5              100      0       0      15        0.0%
+BITBANK6           100      0       0      16        0.0%
+BANK6              100      0       0      17        0.0%
+BITBANK7           100      0       0      18        0.0%
+BANK7              100      0       0      19        0.0%
+ABS                  0      0       0      20        0.0%
+BIGRAM             7FF      0       0      21        0.0%
+BITSFR               0      0       0      40        0.0%
+SFR                  0      0       0      40        0.0%
+
+
+Microchip Technology PIC18 Macro Assembler V1.32 build 58300 
+Symbol Table                                                                                   Sat Oct 11 15:44:10 2014
+
+                     u25 7ED6                       u35 7F10                       u65 7FBC  
+                     u75 7FFA              __CFG_BORV$3 000000                      l106 7EB6  
+                    l107 7EC0                      l108 7EC2                      l356 7E58  
+                    l731 7E88                      l727 7E80                      l771 7FC2  
+                    l763 7F84                      l757 7EB2                      l777 7FEA  
+                    l769 7FAC                      l789 7F64                      _PR2 000FCB  
+                    u167 7E5A             __CFG_BOR$OFF 000000                      wreg 000FE8  
+           __CFG_FOSC$HS 000000             __CFG_LVP$OFF 000000             __CFG_WDT$OFF 000000  
+            main@periode 0013                     _main 7F40                     start 0000  
+          __CFG_IESO$OFF 000000            __CFG_MCLRE$ON 000000              _Delay1KTCYx 7E56  
+          __CFG_PLLDIV$5 000000           __CFG_CCP2MX$ON 000000                    ?_main 0001  
+          __CFG_USBDIV$1 000000            __CFG_PWRT$OFF 000000           __CFG_FCMEN$OFF 000000  
+                  tablat 000FF5                    status 000FD8          __initialization 7E50  
+           __end_of_main 7F7A         __end_of_OpenPWM1 7E78         __end_of_OpenPWM2 7ECC  
+                 ??_main 000F            __activetblptr 000003         __end_of_PwmCycle 8000  
+                 _CCPR1L 000FBE                   _CCPR2L 000FBB       __size_of_SetDCPWM1 003A  
+     __size_of_SetDCPWM2 003A         __end_of_delay_ms 7E92                   tblptrh 000FF7  
+                 tblptrl 000FF6                   tblptru 000FF8               __accesstop 0060  
+__end_of__initialization 7E50          __CFG_PBADEN$OFF 000000           __pcstackCOMRAM 0001  
+      __end_of_SetDCPWM1 7F06        __end_of_SetDCPWM2 7F40                ?_OpenPWM1 0001  
+              ?_OpenPWM2 0001                ?_PwmCycle 0007                  _CCP1CON 000FBD  
+                _CCP2CON 000FBA             ?_Delay1KTCYx 0001                ?_delay_ms 0001  
+        __CFG_VREGEN$OFF 000000               ??_OpenPWM1 0001               ??_OpenPWM2 0001  
+                __Hparam 0000                  __Lparam 0000               ??_PwmCycle 000B  
+        __CFG_STVREN$OFF 000000                  __pcinit 7E50                  __ramtop 0800  
+                __ptext0 7F40                  __ptext1 7F7A                  __ptext2 7E78  
+                __ptext3 7E56                  __ptext4 7F06                  __ptext5 7ECC  
+                __ptext6 7E92                  __ptext7 7E66                _T2CONbits 000FCA  
+             ??_delay_ms 0002     end_of_initialization 7E50         main@Duty_cycle_1 000F  
+       main@Duty_cycle_2 0011                _TRISBbits 000F93                _TRISCbits 000F94  
+   __size_of_Delay1KTCYx 0010      start_initialization 7E50                _SetDCPWM1 7ECC  
+              _SetDCPWM2 7F06          SetDCPWM1@DCycle 0005          SetDCPWM2@DCycle 0005  
+              PwmCycle@p 000D                PwmCycle@q 000E        __size_of_OpenPWM1 0012  
+      __size_of_OpenPWM2 003A        __size_of_PwmCycle 0086         __CFG_LPT1OSC$OFF 000000  
+             ?_SetDCPWM1 0001               ?_SetDCPWM2 0001        __size_of_delay_ms 001A  
+        Delay1KTCYx@unit 0001                delay_ms@i 0003                delay_ms@t 0002  
+   PwmCycle@Duty_cycle_1 0007     PwmCycle@Duty_cycle_2 0009              ??_SetDCPWM1 0003  
+            ??_SetDCPWM2 0003       SetDCPWM1@dutycycle 0001                 _OpenPWM1 7E66  
+               _OpenPWM2 7E92                 __Hrparam 0000                 __Lrparam 0000  
+     SetDCPWM2@dutycycle 0001                 _PwmCycle 7F7A           OpenPWM2@ccp2mx 0003  
+         OpenPWM1@period 0001           OpenPWM2@period 0002                 _delay_ms 7E78  
+          __size_of_main 003A            ??_Delay1KTCYx 0001    __CFG_CPUDIV$OSC1_PLL2 000000  
+    __end_of_Delay1KTCYx 7E66  
